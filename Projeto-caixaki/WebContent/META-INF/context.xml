@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context reloadable="true">
+   <Resource 
+   name="jdbc/datasource" 
+   auth="Container" 
+   type="javax.sql.DataSource"
+   maxActive="50" 
+   maxIdle="10" 
+   maxWait="10"
+   initialSize="10"
+   validationQuery="SELECT 'OK'"
+   testWhileIdle="true"
+   testOnBorrow="true"
+   defaultAutoCommit="false"
+   numTestsPerEvictionRun="5"
+   timeBetweenEvictionRunsMillis="5000"
+   ninEvictalbleIdleTimeMillis="60000"
+   antiJARLocking="false"
+   antiResourceLocking="false"
+   username="postgres" 
+   password="gugudada" 
+   driverClassName="org.postgresql.Driver"
+   url="jdbc:postgresql://localhost:5432/caixaki?autoReconect=true"/>
+</Context>

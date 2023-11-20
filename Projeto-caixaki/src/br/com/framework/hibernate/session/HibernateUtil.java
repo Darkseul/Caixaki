@@ -1,5 +1,7 @@
 package br.com.framework.hibernate.session;
 
+
+
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -50,7 +52,7 @@ public class HibernateUtil implements Serializable{
 	 * Retorna o valor corrente da SessionFactory
 	 * @return
 	 */
-	private static SessionFactory getSessionFactory() {
+	public static SessionFactory getSessionFactory() {
 		
 		return sessionFactory;
 	}
