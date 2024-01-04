@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>Caixaki</title>
+
+	<style>
+body {
+	margin: 0;
+	padding: 0;
+	background: linear-gradient(45deg, #FFFFEC, #FFE5E5, #FFD1E3, #d3dbfd);
+	background-size: 300% 300%;
+	animation: colors 5s ease;
+	font-size: 24px;
+}
+
+@
+keyframes colors { 0%{
+	background-position: 0% 50%;
+}
+
+50%{
+background-position
+:
+ 
+100%
+50%;
+}
+100%{
+background-position
+:
+ 
+0%
+50%;
+}
+}
+.form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 60vh;
+	flex-direction: column;
+}
+
+.div-username, .div-password {
+	display: flex;
+	flex-direction: column;
+	margin-top: 1em;
+}
+
+.j_username, .j_password {
+	border-radius: 50px;
+	font-size: 20px;
+	padding: 0.5em;
+	border: none;
+}
+
+.caixa-mensagem{
+	float: right;
+}
+
+.ent-button{
+	margin-top: 20px;
+	width: 100%;
+}
+
+.input-button{
+	display: inline-block;
+	width: 100%;
+	border: none;
+	background-color: #04AA6D;
+	border-radius: 5px;
+	color: white;
+	padding: 0.5em;
+	margin-top: 20px;
+	font-size: 26px;
+	text-align: center;
+	text-align: center;
+}
+</style>
+</h:head>
+<h:body>
+
+	<h:form action="" id="form" class="formulario" prependId="false">
+
+		<div class="caixa-mensagem">
+			<p:growl id="msg" showDetail="false" sticky="true" redisplay="true" autoUpdate="true" life="500"/>
+		</div>
+		
+		<p:dialog header="Encerrar sessão" widgetVar="dlg" resizable="false" modal="true" closable="false">
+			<div class="form">
+			<div class="div-username">
+				<h:outputLabel for="username" value="Usuário: "/> <p:inputText required="true" label="j_username"
+					id="username" name="j_username" class="j_username" requiredMessage="Informe o nome de usuário"
+					placeholder="Insira o nome de usuário" value="#{loginBeanView.username}"/>
+			</div>
+
+			<div class="div-password">
+				<h:outputLabel for="password" value="Senha: "/> <p:inputMask required="true" label="j_username"
+					id="password" name="j_password" class="j_password" requiredMessage="Informe a senha"
+					placeholder="Insira a senha de usuário" value="#{loginBeanView.password}"/>
+			</div>
+			
+			<div class="ent-button">
+					<p:commandButton class="input-button" value="Encerrar" update="form:msg" ajax="true"
+					 oncomplete="handlerLoginRequest(xhr, status, args)" actionListener="#{loginBeanView.invalidar}"/>
+				</div>
+			</div>
+		</p:dialog>
+
+	</h:form>
+
+
+	<script type="text/javascript" charset="UTF-8">
+	
+		function handlerLoginRequest(xhr, status, args){
+			
+			if(!args.loggedIn){
+				PF('dlg').jq.effect("shake"), {times: 5}, 100;
+			}else{
+				PF('dlg').hide();
+				document.location = '#{request.contextPath}' + "/j_spring_security_logout"
+			}
+		}
+	
+		$(function(){
+			PF('dlg').show();
+		});
+	</script>
+</h:body>
+</html>

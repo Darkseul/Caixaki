@@ -3,11 +3,261 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
 
 <h:head>
+	<meta name="Content-type" content="text/html;charset=UTF-8" />
+	<title>Caixa</title>
+
+	<h:outputScript name="jquery.js" library="primefaces/jquery" />
+	
+	
+	
+	
+	<style>
+	
+body{
+	margin: 0;
+	padding: 0;
+	font-family: arial;
+}
+
+.conteudo{
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	
+	background: linear-gradient(45deg,#FFECD6, #94d8f5, rgb(193, 204, 245), rgb(225, 229, 248), #d3dbfd);
+	background-size: 300% 300%;
+    animation: colors 5s ease;
+}
+
+@keyframes colors{
+    0%{
+        background-position: 0% 50%;
+    }
+    50%{
+        background-position: 100% 50%;
+    }
+    100%{
+        background-position: 0% 50%;
+    }
+}
+
+.caixa-esquerda{
+	border-radius: 5px;
+}
+
+.titulo{
+	font-size: 30px;
+	padding: 0;
+	color: #445069;
+}
+
+.subtitulo{
+	color: white;
+	width: 100%;
+	background-color: #161A30;
+	padding: 1em 0 1em 0;
+	text-align: center;
+	border-radius: 50px;
+}
+
+.caixa-direita{
+	padding: 60px;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	background-color: #161A30;
+	color: white;
+	margin-left: 70px;
+	color: #F3F3F3;
+}
+
+.logo{
+	display: flex;
+	justify-content: center;
+}
+
+.logo img{
+	width: 100px;
+	border-radius: 5px;
+	height: auto;
+	
+}
+
+.ent-msg-bad-credentials, .ent-msg-limit-sessions{
+	color: red;
+	font-size: 14px;
+	margin: 30px 0 0 0;
+}
+
+.ent-login, .ent-senha{
+    font-size: 32px;
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.input-login, .input-senha{
+	border-radius: 50px;
+	font-size: 24px;
+	margin-top: 10px;
+	border: none;
+	padding: 0.5em;
+}
+
+.ent-button{
+	margin-top: 20px;
+	width: 100%;
+}
+
+.input-button{
+	display: inline-block;
+	width: 100%;
+	border: none;
+	background-color: #04AA6D;
+	border-radius: 5px;
+	color: white;
+	padding: 0.5em;
+	margin-top: 20px;
+	font-size: 26px;
+	text-align: center;
+	text-align: center;
+}
+
+.criar-conta{
+	font-size: 14px;
+}
+
+.criar-conta a{
+	text-decoration: none;
+	color: #38419D;
+}
+
+	</style>
 </h:head>
 <h:body>
-	<h1>Hello World!</h1>
+
+	<div class="conteudo">
+
+		<div class="caixa-esquerda">
+			<div class="titulo">
+				<h1>Seja Bem-Vindo</h1>
+			</div>
+			<div class="subtitulo">
+				<h3>Realize o Login</h3>
+			</div>
+		</div>
+
+		<div class="caixa-direita">
+			<form id="formulario" method="post" onsubmit="return estresse()" action="#{request.contextPath}/j_spring_security_check">
+			
+				<div class="logo">
+					<h:graphicImage name="logo-caixa.jpeg" library="img" alt="Logo" />
+				</div>
+				
+				<h:panelGroup rendered="#{!empty param.login_error}">
+					<div class="ent-msg-bad-credentials">
+						<h:outputLabel
+							rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad credentials'}">
+							<!--  rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad Credentials'}" -->
+							<span class="msgSpan">Permissão Negada, usuário ou senha
+								incorretos</span>
+						</h:outputLabel>
+					</div>
+
+					<div class="ent-msg-limit-sessions">
+						<h:outputLabel
+							rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Maximum sessions of 1 for this principal exceeded'}">
+							<span class="msgSpan">Permissão Negada, Há mais de uma
+								sessão presente nessa conta</span>
+								<div class="ent-button">
+					<h:commandButton value="Encerrar sessão" type="button" onclick="invalidarSession('#{request.contextPath}', '/publico/invalidateSession')" class="input-button"/>
+				</div>
+						</h:outputLabel>
+						
+					</div>
+				</h:panelGroup>
+				
+				<div class="ent-login">
+					<label for="j_username">Usuário:</label>
+					<input class="input-login" id="j_username" name="j_username" maxlength="10" placeholder="Digite o nome de usuário"/>
+				</div>
+				
+				<div class="ent-senha">
+					<label for="j_password">Senha:</label>
+					<input type="password" class="input-senha" name="j_password" id="j_password" maxlength="10" placeholder="Digite a senha de usuário"/>
+				</div>
+				
+				<div class="ent-button">
+					<button class="input-button" type="submit" >Entrar</button>
+				</div>
+			</form>
+			
+			
+			<div class="criar-conta">
+				<p>Ainda não possui uma conta? <a href="#">Criar conta</a></p>
+			</div>
+		</div>
+		
+	</div>
+	
+	<script>
+	
+	$('#j_username').focus();
+	
+	function invalidarSession(context, pagina){
+		
+		document.location = (context + pagina + ".jsf");
+	}
+	
+	function estresse(){
+		
+		var j_username = document.getElementById("j_username").value;
+		var j_password = document.getElementById("j_password").value;
+		
+		
+		if(j_username === null || j_username.trim() === ''){
+			alert("informe o login");
+			$('#input-login').focus();
+			return false;
+		}
+		
+		if(j_password === null || j_password.trim() === ''){
+			alert("informe a senha");
+			$('#input-senha').focus();
+			return false;
+		}
+		
+		return true;
+	}
+
+	function validarSenhaLogin(){
+		
+		j_username = document.getElementById("j_username").value;
+		j_password = document.getElementById("j_password").value;
+		
+		if(j_username === null || j_username.trim() === ''){
+			alert("informe o login");
+			$('#input-login').focus();
+			return false;
+		}
+		
+		if(j_senha === null || j_senha.trim() === ''){
+			alert("informe a senha");
+			$('#input-senha').focus();
+			return false;
+		}
+		
+		return true;
+	}
+	</script>
 </h:body>
 </html>

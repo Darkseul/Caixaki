@@ -1,0 +1,20 @@
+body{
+	margin: 0;
+	padding: 0;
+	font-family: arial;
+	background-color: red;
+}
+
+.conteudo{
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+	color: red;
+	border: 5px solid red;
+}
+
+.logo img{
+	width: 100vw;
+	
+}

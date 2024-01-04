@@ -11,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-public class SimpleJdbcClassImpl extends SimpleJdbcCall implements Serializable{
+public class SimpleJdbcClassImpl extends SimpleJdbcCall implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public SimpleJdbcClassImpl(DataSource datasource) {
-		super(datasource);
+	public SimpleJdbcClassImpl(DataSource dataSource) {
+		super(dataSource);
+
 	}
+
 }

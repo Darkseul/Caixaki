@@ -39,7 +39,7 @@ public class HibernateUtil implements Serializable{
 		try {
 			
 			if(sessionFactory == null) {
-				sessionFactory = new Configuration().buildSessionFactory();
+				sessionFactory = new Configuration().configure().buildSessionFactory();
 			}
 			return sessionFactory;
 		}catch (Exception e) {

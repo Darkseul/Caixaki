@@ -33,11 +33,24 @@
   	<location>/error/acessoNegado.jsf</location>
   </error-page>
   
+    <!-- Erro pagina nao encontrada -->
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/error/paginaNaoEncontrada.jsf</location>
+  </error-page>
+  
   <!-- Erro interno do servidor -->
   <error-page>
   	<error-code>500</error-code>
   	<location>/error/error.jsf</location>
   </error-page>
+  
+  <jsp-config>
+  	<jsp-property-group>
+  		<url-pattern>/**</url-pattern>
+  			<el-ignored>false</el-ignored>
+  	</jsp-property-group>
+  </jsp-config>
   
   <!-- Habilitar Comentario em paginas .jsf -->
   <context-param>
@@ -56,6 +69,18 @@
   	<param-name>com.sun.faces.expressionFactory</param-name>
   	<param-value>com.sun.el.ExpressionFactoryImpl</param-value>
   </context-param>
+  
+  <!-- Especificar para o spring fazer aleitura dos arquivos applicationContext.xml e spring-servlet -->
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>
+  		/WEB-INF/applicationContext.xml
+  		/WEB-INF/spring-servlet-servlet.xml
+  		/WEB-INF/applicationContext-security.xml
+  	</param-value>
+  </context-param>
+  
+  
   
   <!-- Tempo que uma mudança em uma página jsf demora para ser atualizada -->
    <context-param>
@@ -81,6 +106,64 @@
   	<param-value>smoothness</param-value>
   </context-param>
   
+  <!-- Destacar o filterOpenSessionInView criado -->
+  <filter>
+  	<filter-name>conexaoFilter</filter-name>
+  	<filter-class>br.com.project.filter.FilterOpenSessionInView</filter-class>
+  </filter>
+  
+  <!-- filter do spring security -->
+  <filter>
+  	<filter-name>springSecurityFilterChain</filter-name>
+  	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  
+  <filter>
+  	<filter-name>encoding-filter</filter-name>
+  	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  	<init-param>
+  		<param-name>encoding</param-name>
+  		<param-value>ISO-8859-1</param-value>
+  	</init-param>
+  </filter>
+  
+  <!-- mapeamento de filters -->  
+  <filter-mapping>
+  	<filter-name>encoding-filter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>conexaoFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>springSecurityFilterChain</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <!-- Configurando o contextLoaderListener do spring: classe responsável por retornar qualquer
+  	   objeto do spring
+   -->
+   <listener>
+   	 <listener-class>br.com.project.listener.ContextLoaderListenerCaixakiUtils</listener-class>
+   </listener>
+   
+   <!-- ativar o MVC do spring -->
+   <listener>
+   	 <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+   </listener>
+   
+   <!-- Listener do hibernate envers -->
+   <listener>
+   	 <listener-class>br.com.project.listener.CustomListener</listener-class>
+   </listener>
+   
+   <listener>
+   	<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+   </listener>
+  
   <!-- upload de imagens do primefaces -->
   <filter-mapping>
   	<filter-name>PrimeFaces FileUpload Filter</filter-name>
@@ -100,6 +183,17 @@
   	<res-type>javax.sql.DataSource</res-type>
   	<res-auth>Container</res-auth>
   </resource-ref>
+  
+  <servlet>
+  	<servlet-name>spring-servlet</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet> 
+  
+  <servlet-mapping>
+  	<servlet-name>spring-servlet</servlet-name>
+  	<url-pattern>/</url-pattern>
+  </servlet-mapping>
   
   <!-- Processa o ciclo de vida do JSF escrevendo no navegador -->
   <servlet>
