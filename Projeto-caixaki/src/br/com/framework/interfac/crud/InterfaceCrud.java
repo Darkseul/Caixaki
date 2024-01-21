@@ -195,4 +195,6 @@ public interface InterfaceCrud<T> extends Serializable{
 	 * @throws Exception
 	 */
 	List<?> findListByQueryDinamic(String query, int inicialRegistro, int maxResultado) throws Exception;
+
+	void executeUpdateSqlDinamic(String query, String login) throws Exception;
 }

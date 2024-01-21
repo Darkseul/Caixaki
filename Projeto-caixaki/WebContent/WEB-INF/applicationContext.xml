@@ -123,6 +123,7 @@
 	  
 	  <!-- Services -->
 	  <bean id="srvLogin" class="br.com.srv.implementation.SrvLoginImpl"/>
+	  <bean id="srvEntidade" class="br.com.srv.implementation.SrvEntidadeImpl"/>
 	 
 	  <!-- Controllers -->
 	  <bean id="sessionController" class="br.com.project.geral.controller.SessionControllerImpl" scope="singleton"/>

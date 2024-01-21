@@ -95,14 +95,14 @@ background-position
 		<p:dialog header="Encerrar sessão" widgetVar="dlg" resizable="false" modal="true" closable="false">
 			<div class="form">
 			<div class="div-username">
-				<h:outputLabel for="username" value="Usuário: "/> <p:inputText required="true" label="j_username"
-					id="username" name="j_username" class="j_username" requiredMessage="Informe o nome de usuário"
+				<h:outputLabel for="j_username" value="Usuário: "/> <p:inputText required="true" label="j_username"
+					id="j_username" name="j_username" class="j_username" requiredMessage="Informe o nome de usuário"
 					placeholder="Insira o nome de usuário" value="#{loginBeanView.username}"/>
 			</div>
 
 			<div class="div-password">
-				<h:outputLabel for="password" value="Senha: "/> <p:inputMask required="true" label="j_username"
-					id="password" name="j_password" class="j_password" requiredMessage="Informe a senha"
+				<h:outputLabel for="j_password" value="Senha: "/> <p:inputMask required="true" label="j_password"
+					id="j_password" name="j_password" class="j_password" requiredMessage="Informe a senha"
 					placeholder="Insira a senha de usuário" value="#{loginBeanView.password}"/>
 			</div>
 			
@@ -120,7 +120,7 @@ background-position
 	
 		function handlerLoginRequest(xhr, status, args){
 			
-			if(!args.loggedIn){
+			if(args.loggedIn == false){
 				PF('dlg').jq.effect("shake"), {times: 5}, 100;
 			}else{
 				PF('dlg').hide();

@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-public class SimpleJdbcTemplateImpl extends SimpleJdbcTemplate implements Serializable{
+public class SimpleJdbcTemplateImpl extends SimpleJdbcTemplate implements
+		Serializable {
 
 	private static final long serialVersionUID = 1L;
 

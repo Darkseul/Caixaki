@@ -1,22 +1,50 @@
 package br.com.dao.implementation;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import org.springframework.stereotype.Repository;
-import br.com.framework.implementacao.crud.ImplementacaoCrud;
+
+import br.com.framework.hibernate.session.HibernateUtil;
 import br.com.repository.interfaces.RepositoryLogin;
 
+/**
+ * Verifica a existência de um usuário
+ * @author willi
+ * @return boolean
+ */
 @Repository
-public class DaoLogin extends ImplementacaoCrud<Object> implements
+public class DaoLogin extends HibernateUtil implements
 		RepositoryLogin {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public boolean autentico(String login, String senha) throws Exception {
+		
+		
+		// Seta o sql para JDBC
 		String sql = "select count(1) as autentica from entidade where ent_login = ? and ent_senha = ? ";
-		SqlRowSet sqlRowSet = super.getJdbcTemplate().queryForRowSet(sql, new Object[]{login , senha});
-		System.out.println(new Object[]{login , senha}); 
-		System.out.println(sqlRowSet.getInt("autentica")); 
-		return sqlRowSet.next() ? sqlRowSet.getInt("autentica") > 0 : false;
+		PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+		preparedStatement.setString(1, login);
+		preparedStatement.setString(2, senha);
+		
+		// Executa e retorna os valores do SQL
+		ResultSet resultSet = preparedStatement.executeQuery();
+		int result = 0;
+		
+		if(resultSet.next()) {
+		    result = resultSet.getInt("autentica");
+		}
+		preparedStatement.close();
+		
+		boolean existe = false;
+		
+		if(result > 0) {
+			existe = true;
+		}
+		return existe;
 	}
 
 }

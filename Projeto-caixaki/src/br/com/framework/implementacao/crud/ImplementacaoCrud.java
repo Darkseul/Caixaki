@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.framework.hibernate.session.HibernateUtil;
 import br.com.framework.interfac.crud.InterfaceCrud;
+import br.com.project.model.classes.Entidade;
 
 @Component
 @Transactional
@@ -48,7 +49,7 @@ public class ImplementacaoCrud<T> implements InterfaceCrud<T>{
 	/**
 	 * Valida se há transação ativa ou não. Caso não tenha, é iniciada uma transação
 	 */
-	private void validarTransaction() {
+	public void validarTransaction() {
 		if(!sessionFactory.getCurrentSession().getTransaction().isActive()) {
 			sessionFactory.getCurrentSession().beginTransaction();
 		}
@@ -72,7 +73,7 @@ public class ImplementacaoCrud<T> implements InterfaceCrud<T>{
 	/**
 	 * Executa instantâneamente a instrução dada ao banco de dados
 	 */
-	private void executeFlushSession() {
+	public void executeFlushSession() {
 		
 		sessionFactory.getCurrentSession().flush();
 	}
@@ -269,5 +270,28 @@ public class ImplementacaoCrud<T> implements InterfaceCrud<T>{
 				.setMaxResults(maxResultado).list();
 		
 		return retorno;
+	}
+	
+	public T findUniqueByQueryDinamica(String query) throws Exception{
+		validarSessionFactory();
+		T obj = (T) sessionFactory.getCurrentSession().createQuery(query.toString()).uniqueResult();
+		return obj;
+	}
+	
+	public T findInuqueByProperty(Class<T> entidade, Object valor, String atributo, String condicao) throws Exception {
+		
+		validarSessionFactory();
+		StringBuilder query = new StringBuilder();
+		query.append("select entity from ").append(entidade.getSimpleName()).append(" entity where entity.")
+		.append(atributo).append(" = '").append(valor).append("' ").append(condicao);
+		
+		T obj = (T) this.findUniqueByQueryDinamica(query.toString());
+		return obj;
+	}
+
+	@Override
+	public void executeUpdateSqlDinamic(String query, String login) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<sec:isAuthenticated>
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title><ui:insert name="titulo">Caixaki</ui:insert></title>
+		<h:outputScript name="primefaces.js" library="primefaces" id="jsPrime" />
+		<h:outputScript name="jquery.js" library="primefaces/jquery" id="jsJquery" />
+		<h:outputScript name="jquery-plugins.js" library="primefaces/jquery" id="jsJqueryPlugin" />
+		<h:outputScript name="jquery.cookie.js" library="javascript" id="jsJaqueryCookie" />
+		<h:outputStylesheet name="jquery-ui.css" library="primefaces/jquery/ui" id="jsJqueryUi" />
+		<h:outputStylesheet name="primefaces.css" library="primefaces" id="jdPrimeCss" />
+		<h:outputScript name="jquery.maskMoney.min.js" library="javascript" id="jsMaskMoneySistema" />
+		<h:outputScript name="jquery.maskedinput.js" library="javascript" id="jsMaskInputSistema" />
+		<h:outputScript name="scripty.js" library="javascript" id="jsScriptSistema" />
+		<h:outputScript name="jsf.js" library="javax.faces" />
+		<h:outputScript name="googlechart.js" library="javascript" />
+		<h:outputScript name="deployJava.js" library="javascript" />
+		
+		<style>
+			
+			body{
+				padding: 0;
+				margin: 0;
+			}
+			
+			#container{
+				padding: 0;
+				margin: 0;
+			}
+			
+			#topo{
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				padding: 1em;
+			}
+			
+			.logo{
+			}
+			
+			.logo-img{
+				
+			}
+			
+			.container-dadosLogin{
+				
+				display: inline-block;
+				padding: 0px 4px 4px 15px;
+				background-color: #86A7FC;
+				border-radius: 20px;
+				width: 20%;
+			}
+			
+			.usuario{
+				color: cyan;
+			}
+			
+			.menu-sair{
+				
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+			
+			.seta{
+				margin-right: 10%;
+			}
+			
+			.menupop{
+				position: absolute; left: 95%; margin-left: -150px;
+				margin-top: 6%;
+				background-color: #E3F4F4;
+				padding: 1em;
+				width: 10%;
+				border: 1px solid black;
+			}
+			
+		</style>
+	</h:head>
+	
+	<h:form id="formTemplate" prependId="false">
+		<body>
+			<ui:include src="/templates/status.xhtml"/>
+			
+			<!-- MENU -->
+			
+			<div id="msgError">
+				<p:growl autoUpdate="true" life="7000" widgetVar="msgError"
+				 redisplay="true" id="msg" showDetail="false" sticky="false"/>
+				 
+				 <p:tooltip id="toolTipFocus" globalSelector="a, :input, :button" showEvent="focus" hideEvent="blur"/>
+			</div>
+			
+			<div id="container">
+				<div id="topo">
+					<div class="logo">
+						<h:graphicImage library="img" name="santander-logo.png" width="200px" height="auto" class="logo-img"/>
+					</div>
+					<div class="container-dadosLogin">
+						<p>Usuário: <span class="usuario">#{entidadeBeanView.usuarioLogadoSecurity}</span></p>
+						<p>Último Login: <h:outputLabel value="#{entidadeBeanView.ultimoAcesso}" style="color:green">
+							<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss" dateStyle="long" timeStyle="full" timeZone="GMT-02:00"/>
+						</h:outputLabel></p>
+						<div class="menu-sair">
+							<a href="#" onclick="logout('#{request.contextPath}')" style="text-decoration:none; color:red">Sair</a>
+							<h:graphicImage library="img" name="setabaixo.png" styleClass="seta" onclick="abrirMenuPop()"/>
+						</div>
+					</div>
+					
+					<div class="menupop" id="menupop">
+						asasasasa
+					</div>
+				</div>
+				
+					<div class="botao-menu" style="padding: 0.5em;border:1px solid black; display: inline-block;">
+						<h:graphicImage library="img" name="iconemenu.png">Menu  </h:graphicImage>
+					</div>
+					
+					<div id="corpo" class="corpo">
+						<ui:insert name="corpo"/>
+					</div>
+					
+				</div>
+			
+			<script>
+				
+				$.noConflict();
+				$("#menupop").hide();
+			
+				function logout(context){
+				
+					document.location = context + "/j_spring_security_logout";
+					
+					$.ajax({
+						type: "POST",
+						url: "invalidar_session"
+					})
+				}
+				
+				function abrirMenuPop(){
+					
+					$("#menupop").show('slow').mouseleave(function(){
+						fecharMenuPop();
+					});
+				}
+				
+				function fecharMenuPop(){
+					
+					if($("#menupop").is(":visible")){
+						$("#menupop").hide("slow");
+					}
+				}
+			</script>
+		</body>
+	</h:form>
+</sec:isAuthenticated>
+</html>

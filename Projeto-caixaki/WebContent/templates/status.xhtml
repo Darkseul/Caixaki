@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	
+	<ui:component>
+	
+		<p:ajaxStatus onstart="PF('status').show()" onsuccess="PF('status').hide()"/>
+	
+		<p:dialog id="dialogAjaxStatusloader" modal="true" closable="false" widgetVar="status"
+		height="200px" width="200px" header="Processando..." footer="Aguarde..." draggable="false"
+		appendTo="@(body)" dynamic="false" resizable="false" style="text-align:center;">
+			<h:graphicImage library="img" name="loader.gif" id="img-ajax-loader" styleClass="bordaImagem" height="100px" width="100px" 
+			style="margin-top: 20%"/>
+		</p:dialog>	
+		
+		<p:dialog id="dialogAjaxStatusError" modal="true" widgetVar="statusDialogError" height="200px" width="200px"
+		resizable="false" header="Erro ao processar." footer="Erro" draggable="false" closable="true">
+			<h:graphicImage library="img" name="errorLoader.jpeg" id="imgAjaxLoaderError" styleClass="bordaImagem"/>
+		</p:dialog>	
+	</ui:component>
+</html>
